@@ -9,9 +9,6 @@ Tensorflow == 0.12.1 (pip install tensorflow-gpu==0.12.1)
 ### Add tensorpack to python path:
 `export PYTHONPATH=$PYTHONPATH:`readlink -f path/to/tensorpack``
 
-If caffe.proto error occurs:
-wget ''
-
 ## Usage
 
 ### Command to train a binarized AlexNet with 8-bit actiavtions, use:
