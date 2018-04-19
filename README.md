@@ -6,7 +6,7 @@ Python 2.7 or 3
 Python bindings for OpenCV
 Tensorflow == 0.12.1 (pip install tensorflow-gpu==0.12.1)
 
-# Add tensorpack to python path:
+### Add tensorpack to python path:
 `export PYTHONPATH=$PYTHONPATH:`readlink -f path/to/tensorpack``
 
 If caffe.proto error occurs:
