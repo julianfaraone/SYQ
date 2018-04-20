@@ -1,0 +1,6 @@
+termcolor
+numpy
+tqdm
+nltk
+decorator
+recommonmark==0.4.0
