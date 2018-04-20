@@ -7,7 +7,7 @@ Python bindings for OpenCV <br />
 Tensorflow == 0.12.1 (pip install tensorflow-gpu==0.12.1) 
 
 ### Add tensorpack to python path:
-`export PYTHONPATH=$PYTHONPATH:``readlink -f path/to/tensorpack``
+`export PYTHONPATH=$PYTHONPATH:``readlink -f path/to/tensorpack`
 
 ## Usage
 
