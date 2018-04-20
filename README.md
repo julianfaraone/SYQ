@@ -2,12 +2,12 @@
 This repository represents training examples for the CVPR 2018 paper "SYQ:Learning Symmetric Quantization For Efficient Deep Neural Networks"
 
 ## Tested Platform - Dependencies
-Python 2.7 or 3
-Python bindings for OpenCV
-Tensorflow == 0.12.1 (pip install tensorflow-gpu==0.12.1)
+Python 2.7 or 3 <br />
+Python bindings for OpenCV <br />
+Tensorflow == 0.12.1 (pip install tensorflow-gpu==0.12.1) 
 
 ### Add tensorpack to python path:
-`export PYTHONPATH=$PYTHONPATH:`readlink -f path/to/tensorpack``
+export PYTHONPATH=$PYTHONPATH:`readlink -f path/to/tensorpack`
 
 ## Usage
 
