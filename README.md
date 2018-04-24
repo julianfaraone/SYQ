@@ -39,7 +39,7 @@ Ensure INITIAL = False and weights = None in syq-alexnet.py
 For initial training from scratch, we recommend using the pre-trained floating point weights for AlexNet which can be found at <br />
 <br />
 https://drive.google.com/open?id=1Saa9kADmWhS5f_91aW83r8UwHQf_UY6Z <br />
-Download this model and set the variable PATH_float to its path in syq-alexnet.py <br />
+Download this model and set the variable PATH_float in syq-alexnet.py to its path <br />
 
 Ensure INITIAL = True in syq-alexnet.py
 

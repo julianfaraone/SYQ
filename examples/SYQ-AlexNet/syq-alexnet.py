@@ -23,21 +23,25 @@ INITIAL = True
 BITA = 8
 FRAC = 4
 PATH = ''
+
+#Enter Path to floatingpoint_alexnet.npy downloaded from Google Drive
 PATH_float = ''
 
 if INITIAL:
-	d = np.load(PATH_float).item()
+    d = np.load(PATH_float).item()
 
-	weights = {}
+    weights = {}
 
-	#calculate initialization for scaling coefficients
-	for i in d.keys():
+    #calculate initialization for scaling coefficients
+    for i in d.keys():
         if '/W:' in i and 'conv' in i:
             mean = np.mean(np.absolute(d[i]), axis = (2,3))
             weights[i] = mean
         elif '/W:' in i and 'fc' in i:
             mean = np.mean(np.absolute(d[i]))
             weights[i] = mean
+else:
+    weights = None
 
 class Model(ModelDesc):
     def _get_input_vars(self):
@@ -57,7 +61,7 @@ class Model(ModelDesc):
             if name != 'W' or 'conv0' in v.op.name or 'fct' in v.op.name:
                 return v
             else:
-                return fine_grained_quant(v, args.eta, v.op.name, weights)
+                return fine_grained_quant(v, args.eta, v.op.name, INITIAL, weights)
         tf.get_variable = new_get_variable
 
         def activate(x):

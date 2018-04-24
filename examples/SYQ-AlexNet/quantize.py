@@ -6,7 +6,7 @@ import numpy as np
 
 G = tf.get_default_graph()
 
-def fine_grained_quant(x, eta, name, value, binary=True):
+def fine_grained_quant(x, eta, name, INITIAL, value, binary=True):
     
     shape = x.get_shape()
 
@@ -16,21 +16,22 @@ def fine_grained_quant(x, eta, name, value, binary=True):
 
     if 'conv' in name:
 
-        w_s = tf.get_variable('Ws', [(shape[0].value*shape[1].value),1], collections=[tf.GraphKeys.VARIABLES, 'SCALING'], initializer=tf.constant_initializer(value[name + ':0']))
-
+        if INITIAL:
+            w_s = tf.get_variable('Ws', [(shape[0].value*shape[1].value),1], collections=[tf.GraphKeys.VARIABLES, 'SCALING'], initializer=tf.constant_initializer(value[name + ':0']))
+        else:
+            w_s = tf.get_variable('Ws', [(shape[0].value*shape[1].value),1], collections=[tf.GraphKeys.VARIABLES, 'SCALING'], initializer=tf.constant_initializer(1.0))
         #scalar summary
         # for i in range(0,(shape[0].value*shape[1].value)):
         #     tf.scalar_summary(w_s.name + str(i) +str(0), w_s[i,0])
         
         #each pixel
         for i in range(shape[0].value):
-	    for j in range(shape[1].value):
-
-	    	ws = w_s[(shape[1].value*i) + j, 0]
-            	mask = tf.ones(shape)
-            	mask_p = tf.select(x[i,j,:,:] > eta_x, mask[i,j,:,:] * ws, mask[i,j,:,:])
-            	mask_np = tf.select(x[i,j,:,:] < -eta_x, mask[i,j,:,:] * ws, mask_p)
-            	list_of_masks.append(mask_np)
+            for j in range(shape[1].value):
+                ws = w_s[(shape[1].value*i) + j, 0]
+                mask = tf.ones(shape)
+                mask_p = tf.select(x[i,j,:,:] > eta_x, mask[i,j,:,:] * ws, mask[i,j,:,:])
+                mask_np = tf.select(x[i,j,:,:] < -eta_x, mask[i,j,:,:] * ws, mask_p)
+                list_of_masks.append(mask_np)
                 
         masker = tf.stack(list_of_masks)
         masker = tf.reshape(masker, [i.value for i in shape])
@@ -48,7 +49,10 @@ def fine_grained_quant(x, eta, name, value, binary=True):
         tf.histogram_summary(w.name, w)
     else:
 
-        wn = tf.get_variable('Wn', collections=[tf.GraphKeys.VARIABLES, 'scale_fc'], initializer=value[name + ':0'])
+        if INITIAL:
+            wn = tf.get_variable('Wn', collections=[tf.GraphKeys.VARIABLES, 'scale_fc'], initializer=value[name + ':0'])
+        else:
+            wn = tf.get_variable('Wn', collections=[tf.GraphKeys.VARIABLES, 'scale_fc'], initializer=1.0)
 
         #tf.scalar_summary(wp.name, wp)
         tf.scalar_summary(wn.name, wn)
@@ -72,7 +76,7 @@ def fine_grained_quant(x, eta, name, value, binary=True):
 
     return w
 
-def rows_quant(x, eta, name, value, binary=True):
+def rows_quant(x, eta, name, INITIAL, value, binary=True):
 
     shape = x.get_shape()
 
@@ -81,7 +85,10 @@ def rows_quant(x, eta, name, value, binary=True):
     list_of_masks = []
 
     if 'conv' in name:
-        w_s = tf.get_variable('Ws', [shape[0].value,1], collections=[tf.GraphKeys.VARIABLES, 'SCALING'], initializer=tf.constant_initializer(value[name + ':0']))
+        if INITIAL:
+            w_s = tf.get_variable('Ws', [shape[0].value,1], collections=[tf.GraphKeys.VARIABLES, 'SCALING'], initializer=tf.constant_initializer(value[name + ':0']))
+        else:
+            w_s = tf.get_variable('Ws', [shape[0].value,1], collections=[tf.GraphKeys.VARIABLES, 'SCALING'], initializer=tf.constant_initializer(1.0))
 
         for i in range(0,(shape[0].value*shape[1].value)):
             tf.scalar_summary(w_s.name + str(i) +str(0), w_s[i,0])
@@ -89,12 +96,11 @@ def rows_quant(x, eta, name, value, binary=True):
         
         #each row
         for j in range(shape[0].value):
-	        ws = w_s[j , 0]
-
-        	mask = tf.ones(shape)
-        	mask_p = tf.select(x[i,:,:,:] > eta_x, mask[i,:,:,:] * ws, mask[i,:,:,:])
-        	mask_np = tf.select(x[i,:,:,:] < -eta_x, mask[i,:,:,:] * ws, mask_p)
-        	list_of_masks.append(mask_np)
+            ws = w_s[j , 0]
+            mask = tf.ones(shape)
+            mask_p = tf.select(x[i,:,:,:] > eta_x, mask[i,:,:,:] * ws, mask[i,:,:,:])
+            mask_np = tf.select(x[i,:,:,:] < -eta_x, mask[i,:,:,:] * ws, mask_p)
+            list_of_masks.append(mask_np)
 
         masker = tf.stack(list_of_masks)
         masker = tf.reshape(masker, [i.value for i in shape])
@@ -112,7 +118,10 @@ def rows_quant(x, eta, name, value, binary=True):
         tf.histogram_summary(w.name, w)
 
     else:
-        wn = tf.get_variable('Wn', collections=[tf.GraphKeys.VARIABLES, 'scale_fc'], initializer=value[name + ':0'])
+        if INITIAL:
+            wn = tf.get_variable('Wn', collections=[tf.GraphKeys.VARIABLES, 'scale_fc'], initializer=value[name + ':0'])
+        else:
+            wn = tf.get_variable('Wn', collections=[tf.GraphKeys.VARIABLES, 'scale_fc'], initializer=1.0)
 
         tf.scalar_summary(wn.name, wn)
 
