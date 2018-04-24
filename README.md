@@ -31,3 +31,17 @@ export PYTHONPATH=$PYTHONPATH:`readlink -f path/to/tensorpack`
 --in-epochs >Enter epochs which will compute the validation error. It automatically compute all epochs after the last <br />                learning rate change. Default is computing validation error for all epochs <br />
 --eval >Evaluate the model on test or validation set <br />
 --name >Sets the name of the folder for storing training results <br />
+
+## Initial Training
+
+For initial training from scratch, we recommend using the pre-trained floating point weights for AlexNet which can be found at <br />
+<br />
+https://drive.google.com/open?id=16wYVcbiNuSQ8gAY8pCDzdJ0fWjoYASX_
+<br />
+Download this model and set the variable PATH_float to its path in syq-alexnet.py <br />
+
+## Training Results
+
+Set path of training results storage as PATH in syq-alexnet <br />
+<br />
+Enter directory name using the --name parameter 

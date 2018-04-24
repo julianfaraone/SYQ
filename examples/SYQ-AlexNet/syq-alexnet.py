@@ -18,24 +18,26 @@ from quantize import *
 from tensorpack.utils.stats import RatioCounter
 
 TOTAL_BATCH_SIZE = 32
+INITIAL = True
 
 BITA = 8
 FRAC = 4
 PATH = ''
-PATH_float = '/mnt/ds3lab/faraonej/train_log/FloatingPoint/floatingpoint/floatingpoint_alexnet.npy'
+PATH_float = ''
 
-d = np.load(PATH_float).item()
+if INITIAL:
+	d = np.load(PATH_float).item()
 
-weights = {}
+	weights = {}
 
-#calculate initialization for scaling coefficients
-for i in d.keys():
-    if '/W:' in i and 'conv' in i:
-        mean = np.mean(np.absolute(d[i]), axis = (2,3))
-        weights[i] = mean
-    elif '/W:' in i and 'fc' in i:
-        mean = np.mean(np.absolute(d[i]))
-        weights[i] = mean
+	#calculate initialization for scaling coefficients
+	for i in d.keys():
+    	if '/W:' in i and 'conv' in i:
+        	mean = np.mean(np.absolute(d[i]), axis = (2,3))
+        	weights[i] = mean
+    	elif '/W:' in i and 'fc' in i:
+        	mean = np.mean(np.absolute(d[i]))
+        	weights[i] = mean
 
 class Model(ModelDesc):
     def _get_input_vars(self):
@@ -62,7 +64,7 @@ class Model(ModelDesc):
             x = tf.nn.relu(x)
             x = tf.clip_by_value(x,0,1)
             x = quantize(x, BITA, None)
-	    return x
+            return x
 
         with argscope(BatchNorm, decay=0.9, epsilon=1e-4), \
                 argscope([Conv2D, FullyConnected], use_bias=False, nl=tf.identity):
@@ -277,7 +279,7 @@ if __name__ == '__main__':
     parser.add_argument('--inf-epochs', type=int, nargs='+', metavar='I', default=list(np.arange(1,121)))
     parser.add_argument('--eval', type=str, default=None, choices=['val', 'test'],
             help='evaluate the model on the test of validation set')
-    parser.add_argument('--name', default='hello')
+    parser.add_argument('--name', default='train1')
 
     args = parser.parse_args()
 
