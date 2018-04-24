@@ -19,6 +19,8 @@ export PYTHONPATH=$PYTHONPATH:`readlink -f path/to/tensorpack`
     
 `python syq-alexnet.py --data <enter path to data> --num-epochs 112 168 240 --learning-rate 1e-4 2e-5 4e-6 --load <enter checkpoint or npy path> --eta 0.0 --load <PATH>/checkpoint --gpu 0`
 
+Ensure INITIAL = False and weights = None in syq-alexnet.py
+
 ## Parameters
 
 --gpu >Set which gpu's you want to instantiate (example: --gpu 0,1) <br />
@@ -38,6 +40,8 @@ For initial training from scratch, we recommend using the pre-trained floating p
 <br />
 https://drive.google.com/open?id=1Saa9kADmWhS5f_91aW83r8UwHQf_UY6Z <br />
 Download this model and set the variable PATH_float to its path in syq-alexnet.py <br />
+
+Ensure INITIAL = True in syq-alexnet.py
 
 ## Training Results
 

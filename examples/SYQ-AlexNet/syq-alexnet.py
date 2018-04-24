@@ -32,12 +32,12 @@ if INITIAL:
 
 	#calculate initialization for scaling coefficients
 	for i in d.keys():
-    	if '/W:' in i and 'conv' in i:
-        	mean = np.mean(np.absolute(d[i]), axis = (2,3))
-        	weights[i] = mean
-    	elif '/W:' in i and 'fc' in i:
-        	mean = np.mean(np.absolute(d[i]))
-        	weights[i] = mean
+        if '/W:' in i and 'conv' in i:
+            mean = np.mean(np.absolute(d[i]), axis = (2,3))
+            weights[i] = mean
+        elif '/W:' in i and 'fc' in i:
+            mean = np.mean(np.absolute(d[i]))
+            weights[i] = mean
 
 class Model(ModelDesc):
     def _get_input_vars(self):
