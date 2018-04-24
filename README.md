@@ -1,5 +1,5 @@
 # SYQ Training
-This repository represents training examples for the CVPR 2018 paper "SYQ:Learning Symmetric Quantization For Efficient Deep Neural Networks"
+This repository represents training examples for the CVPR 2018 paper "SYQ: Learning Symmetric Quantization For Efficient Deep Neural Networks"
 
 ## Tested Platform - Dependencies
 Python 2.7 or 3 <br />
@@ -13,17 +13,17 @@ export PYTHONPATH=$PYTHONPATH:`readlink -f path/to/tensorpack`
 
 ### Command to train a binarized AlexNet with 8-bit actiavtions, use:
     
-`python syq-imagenet-alexnet.py --data <enter path to data> --num-epochs 56 84 120 --learning-rate 1e-4 2e-5 4e-6 --load <enter checkpoint or npy path> --eta 0.0`
+`python syq-alexnet.py --data <enter path to data> --num-epochs 112 168 240 --learning-rate 1e-4 2e-5 4e-6 --load <enter checkpoint or npy path> --eta 0.0 --gpu 0`
 
 ### Continue training from latest epoch:
     
-`python syq-imagenet-alexnet.py --data <enter path to data> --num-epochs 56 84 120 --learning-rate 1e-4 2e-5 4e-6 --load <enter checkpoint or npy path> --eta 0.0 --load <PATH>/checkpoint`
+`python syq-alexnet.py --data <enter path to data> --num-epochs 112 168 240 --learning-rate 1e-4 2e-5 4e-6 --load <enter checkpoint or npy path> --eta 0.0 --load <PATH>/checkpoint --gpu 0`
 
 ## Parameters
 
 --gpu >Set which gpu's you want to instantiate (example: --gpu 0,1) <br />
 --load >Load either npy or checkpoint file as a pretrained model by entering its path <br />
---data >Path to training and validation data <br />
+--data >Path to training (train)  and validation (val) data folders  <br />
 --run >Enter image files along with a pretrained models to compute inference <br />
 --eta >Quantization Threshold value (eta=0 for binary networks and defaults to 0.05 for ternary) <br />
 --learning-rate >enter a list of learning rate factors at each step <br />

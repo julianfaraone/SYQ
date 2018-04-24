@@ -1,0 +1,93 @@
+[32m[0424 03:21:19 @logger.py:57][0m Argv: syq-alexnet.py --data /mnt/ds3lab/ImageNet/ --num-epochs 56 84 120 --learning-rate 1e-4 2e-5 4e-6 --eta 0.0 --gpu 0
+[32m[0424 03:21:19 @utils.py:60][0m TENSORPACK_DATASET not set, using /home/faraonej/xilinx-tensorpack/tensorpack/dataflow/dataset for dataset.
+[32m[0424 03:21:32 @multigpu.py:32][0m Training a model of 1 tower
+[32m[0424 03:21:32 @multigpu.py:40][0m Building graph for training tower 0...
+[32m[0424 03:21:32 @_common.py:72][0m conv0 input: [None, 224, 224, 3]
+[32m[0424 03:21:32 @_common.py:80][0m conv0 output: [None, 54, 54, 96]
+[32m[0424 03:21:32 @_common.py:72][0m conv1 input: [None, 54, 54, 96]
+[32m[0424 03:21:33 @_common.py:80][0m conv1 output: [None, 54, 54, 256]
+[32m[0424 03:21:33 @_common.py:72][0m pool1 input: [None, 54, 54, 256]
+[32m[0424 03:21:33 @_common.py:80][0m pool1 output: [None, 27, 27, 256]
+[32m[0424 03:21:33 @_common.py:72][0m conv2 input: [None, 27, 27, 256]
+[32m[0424 03:21:33 @_common.py:80][0m conv2 output: [None, 27, 27, 384]
+[32m[0424 03:21:33 @_common.py:72][0m pool2 input: [None, 27, 27, 384]
+[32m[0424 03:21:33 @_common.py:80][0m pool2 output: [None, 14, 14, 384]
+[32m[0424 03:21:33 @_common.py:72][0m conv3 input: [None, 14, 14, 384]
+[32m[0424 03:21:33 @_common.py:80][0m conv3 output: [None, 14, 14, 384]
+[32m[0424 03:21:33 @_common.py:72][0m conv4 input: [None, 14, 14, 384]
+[32m[0424 03:21:33 @_common.py:80][0m conv4 output: [None, 14, 14, 256]
+[32m[0424 03:21:33 @_common.py:72][0m pool4 input: [None, 14, 14, 256]
+[32m[0424 03:21:33 @_common.py:80][0m pool4 output: [None, 6, 6, 256]
+[32m[0424 03:21:33 @_common.py:72][0m fc0 input: [None, 6, 6, 256]
+[32m[0424 03:21:33 @_common.py:80][0m fc0 output: [None, 4096]
+[32m[0424 03:21:33 @_common.py:72][0m fc1 input: [None, 1, 1, 4096]
+[32m[0424 03:21:33 @_common.py:80][0m fc1 output: [None, 4096]
+[32m[0424 03:21:33 @_common.py:72][0m fct input: [None, 1, 1, 4096]
+[32m[0424 03:21:33 @_common.py:80][0m fct output: [None, 1000]
+[32m[0424 03:21:33 @regularize.py:17][0m Apply regularizer for fc0/W:0
+[32m[0424 03:21:33 @regularize.py:17][0m Apply regularizer for fc0/Wn:0
+[32m[0424 03:21:33 @regularize.py:17][0m Apply regularizer for fc1/W:0
+[32m[0424 03:21:33 @regularize.py:17][0m Apply regularizer for fc1/Wn:0
+[32m[0424 03:21:33 @regularize.py:17][0m Apply regularizer for fct/W:0
+[32m[0424 03:21:35 @modelutils.py:26][0m [36mModel Parameters: [0m
+conv0/W:0: shape=[12, 12, 3, 96], dim=41472
+conv1/W:0: shape=[5, 5, 48, 256], dim=307200
+conv1/Ws:0: shape=[25, 1], dim=25
+bn1/beta:0: shape=[256], dim=256
+bn1/gamma:0: shape=[256], dim=256
+conv2/W:0: shape=[3, 3, 256, 384], dim=884736
+conv2/Ws:0: shape=[9, 1], dim=9
+bn2/beta:0: shape=[384], dim=384
+bn2/gamma:0: shape=[384], dim=384
+conv3/W:0: shape=[3, 3, 192, 384], dim=663552
+conv3/Ws:0: shape=[9, 1], dim=9
+bn3/beta:0: shape=[384], dim=384
+bn3/gamma:0: shape=[384], dim=384
+conv4/W:0: shape=[3, 3, 192, 256], dim=442368
+conv4/Ws:0: shape=[9, 1], dim=9
+bn4/beta:0: shape=[256], dim=256
+bn4/gamma:0: shape=[256], dim=256
+fc0/W:0: shape=[9216, 4096], dim=37748736
+fc0/Wn:0: shape=[], dim=1
+bnfc0/beta:0: shape=[4096], dim=4096
+bnfc0/gamma:0: shape=[4096], dim=4096
+fc1/W:0: shape=[4096, 4096], dim=16777216
+fc1/Wn:0: shape=[], dim=1
+bnfc1/beta:0: shape=[4096], dim=4096
+bnfc1/gamma:0: shape=[4096], dim=4096
+fct/W:0: shape=[4096, 1000], dim=4096000
+fct/b:0: shape=[1000], dim=1000
+[36mTotal param=60981278 (232.625114 MB assuming all float32)[0m
+[32m[0424 03:21:35 @base.py:110][0m Setup callbacks ...
+[32m[0424 03:21:35 @saver.py:63][0m [ModelSaver] tower0/train-error-top1/EMA:0 renamed to train-error-top1/EMA:0 when saving model.
+[32m[0424 03:21:35 @saver.py:63][0m [ModelSaver] tower0/train-error-top5/EMA:0 renamed to train-error-top5/EMA:0 when saving model.
+[32m[0424 03:21:35 @saver.py:63][0m [ModelSaver] tower0/cross_entropy_loss/EMA:0 renamed to cross_entropy_loss/EMA:0 when saving model.
+[32m[0424 03:21:35 @saver.py:63][0m [ModelSaver] tower0/AddN/EMA:0 renamed to AddN/EMA:0 when saving model.
+[32m[0424 03:21:35 @saver.py:63][0m [ModelSaver] tower0/cost/EMA:0 renamed to cost/EMA:0 when saving model.
+[32m[0424 03:21:35 @saver.py:63][0m [ModelSaver] tower0/train-error-top1/EMA/biased:0 renamed to train-error-top1/EMA/biased:0 when saving model.
+[32m[0424 03:21:35 @saver.py:63][0m [ModelSaver] tower0/train-error-top1/EMA/local_step:0 renamed to train-error-top1/EMA/local_step:0 when saving model.
+[32m[0424 03:21:35 @saver.py:63][0m [ModelSaver] tower0/train-error-top5/EMA/biased:0 renamed to train-error-top5/EMA/biased:0 when saving model.
+[32m[0424 03:21:35 @saver.py:63][0m [ModelSaver] tower0/train-error-top5/EMA/local_step:0 renamed to train-error-top5/EMA/local_step:0 when saving model.
+[32m[0424 03:21:35 @saver.py:63][0m [ModelSaver] tower0/cross_entropy_loss/EMA/biased:0 renamed to cross_entropy_loss/EMA/biased:0 when saving model.
+[32m[0424 03:21:35 @saver.py:63][0m [ModelSaver] tower0/cross_entropy_loss/EMA/local_step:0 renamed to cross_entropy_loss/EMA/local_step:0 when saving model.
+[32m[0424 03:21:35 @saver.py:63][0m [ModelSaver] tower0/AddN/EMA/biased:0 renamed to AddN/EMA/biased:0 when saving model.
+[32m[0424 03:21:35 @saver.py:63][0m [ModelSaver] tower0/AddN/EMA/local_step:0 renamed to AddN/EMA/local_step:0 when saving model.
+[32m[0424 03:21:35 @saver.py:63][0m [ModelSaver] tower0/cost/EMA/biased:0 renamed to cost/EMA/biased:0 when saving model.
+[32m[0424 03:21:35 @saver.py:63][0m [ModelSaver] tower0/cost/EMA/local_step:0 renamed to cost/EMA/local_step:0 when saving model.
+[32m[0424 03:21:35 @base.py:111][0m Building graph for predictor tower 0...
+[32m[0424 03:21:37 @base.py:120][0m Initializing graph variables ...
+[32m[0424 03:21:39 @concurrency.py:24][0m Starting EnqueueThread
+[32m[0424 03:21:39 @base.py:142][0m Start training with global_step=0
+[32m[0424 03:21:48 @input_data.py:85][0m [4m[5m[31mERR[0m Exception in EnqueueThread:
+Traceback (most recent call last):
+  File "/home/faraonej/xilinx-tensorpack/tensorpack/train/input_data.py", line 76, in run
+    for dp in self.dataflow.get_data():
+  File "/home/faraonej/xilinx-tensorpack/tensorpack/dataflow/prefetch.py", line 155, in get_data
+    dp = loads(self.socket.recv(copy=False).bytes)
+  File "zmq/backend/cython/socket.pyx", line 693, in zmq.backend.cython.socket.Socket.recv (zmq/backend/cython/socket.c:7683)
+  File "zmq/backend/cython/socket.pyx", line 729, in zmq.backend.cython.socket.Socket.recv (zmq/backend/cython/socket.c:7486)
+  File "zmq/backend/cython/socket.pyx", line 129, in zmq.backend.cython.socket._recv_frame (zmq/backend/cython/socket.c:2093)
+  File "zmq/backend/cython/checkrc.pxd", line 22, in zmq.backend.cython.checkrc._check_rc (zmq/backend/cython/socket.c:9923)
+    raise ContextTerminated(errno)
+ContextTerminated: Context was terminated
+[32m[0424 03:21:48 @input_data.py:92][0m Enqueue Thread Exited.

@@ -89,7 +89,7 @@ def rows_quant(x, eta, name, value, binary=True):
         
         #each row
         for j in range(shape[0].value):
-        ws = w_s[j , 0]
+	        ws = w_s[j , 0]
 
         	mask = tf.ones(shape)
         	mask_p = tf.select(x[i,:,:,:] > eta_x, mask[i,:,:,:] * ws, mask[i,:,:,:])
