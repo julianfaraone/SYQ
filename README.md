@@ -13,11 +13,11 @@ export PYTHONPATH=$PYTHONPATH:`readlink -f path/to/tensorpack`
 
 ### Command to train a binarized AlexNet with 8-bit actiavtions, use:
     
-`python syq-alexnet.py --data <enter path to data> --num-epochs 112 168 240 --learning-rate 1e-4 2e-5 4e-6 --load <enter checkpoint or npy path> --eta 0.0 --gpu 0`
+`python syq-alexnet.py --data <enter path to data> --num-epochs 112 168 240 --learning-rate 1e-4 2e-5 4e-6 --load <npy path> --eta 0.0 --gpu 0`
 
 ### Continue training from latest epoch:
     
-`python syq-alexnet.py --data <enter path to data> --num-epochs 112 168 240 --learning-rate 1e-4 2e-5 4e-6 --load <enter checkpoint or npy path> --eta 0.0 --load <PATH>/checkpoint --gpu 0`
+`python syq-alexnet.py --data <enter path to data> --num-epochs 112 168 240 --learning-rate 1e-4 2e-5 4e-6 --eta 0.0 --load <PATH>/checkpoint --gpu 0`
 
 Ensure INITIAL = False and weights = None in syq-alexnet.py
 
@@ -36,7 +36,7 @@ Ensure INITIAL = False and weights = None in syq-alexnet.py
 
 ## Initial Training
 
-For initial training from scratch, we recommend using the pre-trained floating point weights for AlexNet which can be found at <br />
+For faster training (less required epochs), we recommend using the pre-trained floating point weights for AlexNet which can be found at <br />
 <br />
 https://drive.google.com/open?id=1Saa9kADmWhS5f_91aW83r8UwHQf_UY6Z <br />
 Download this model and set the variable PATH_float in syq-alexnet.py to its path <br />
@@ -47,4 +47,4 @@ Ensure INITIAL = True in syq-alexnet.py
 
 Set path of training results storage as PATH in syq-alexnet <br />
 <br />
-Enter directory name using the --name parameter 
+Enter directory name which training data will be stored in using the --name parameter 
