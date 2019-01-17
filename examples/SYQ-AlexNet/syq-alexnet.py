@@ -18,14 +18,14 @@ from quantize import *
 from tensorpack.utils.stats import RatioCounter
 
 TOTAL_BATCH_SIZE = 32
-INITIAL = True
+INITIAL = False
 
 BITA = 8
 FRAC = 4
 PATH = ''
 
 #Enter Path to floatingpoint_alexnet.npy downloaded from Google Drive
-PATH_float = ''
+PATH_float = 'floatingpoint_alexnet.npy'
 
 if INITIAL:
     d = np.load(PATH_float).item()
@@ -56,7 +56,7 @@ class Model(ModelDesc):
         old_get_variable = tf.get_variable
         def new_get_variable(name, shape=None, **kwargs):
             v = old_get_variable(name, shape, **kwargs)
-	    
+        
             # don't binarize first and last layer
             if name != 'W' or 'conv0' in v.op.name or 'fct' in v.op.name:
                 return v
@@ -307,10 +307,10 @@ if __name__ == '__main__':
     config = get_config(args.learning_rate, args.num_epochs, args.inf_epochs)
 
     if args.load:
-    	if args.load.endswith('.npy'):
+        if args.load.endswith('.npy'):
             config.session_init = ParamRestore(np.load(args.load, encoding='latin1').item())
         else:
-        	config.session_init = SaverRestore(args.load)
+            config.session_init = SaverRestore(args.load)
 
     if args.gpu:
         config.nr_tower = len(args.gpu.split(','))
