@@ -18,7 +18,7 @@ from quantize import *
 from tensorpack.utils.stats import RatioCounter
 
 TOTAL_BATCH_SIZE = 32
-INITIAL = False
+INITIAL = True
 
 BITA = 8
 FRAC = 4

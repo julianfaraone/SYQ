@@ -38,8 +38,6 @@ def Conv2D(x, out_channel, kernel_shape,
     assert in_channel % split == 0
     assert out_channel % split == 0
 
-    print(in_channel)
-
     kernel_shape = shape2d(kernel_shape)
     padding = padding.upper()
     filter_shape = kernel_shape + [in_channel / split, out_channel]
@@ -54,7 +52,6 @@ def Conv2D(x, out_channel, kernel_shape,
     if use_bias:
         b = tf.get_variable('b', [out_channel], initializer=b_init)
 
-    print(W.get_shape(), x.get_shape())
     if split == 1:
         conv = tf.nn.conv2d(x, W, stride, padding)
     else:
