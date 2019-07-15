@@ -10,12 +10,16 @@ from tensorflow.keras.layers import Dense, Conv2D
 import numpy as np
 import matplotlib.pyplot as plt
 from SYQ import SYQ, SYQ_Dense
+from tensorflow.keras.models import load_model
 
 from tensorflow.keras.layers import Flatten
 import argparse
 
 parser = argparse.ArgumentParser(description="SYQ MNIST - Keras")
-parser.add_argument("--bit_width", default=8, type=int, help="Quantization Weight Bitwidth")
+parser.add_argument("--bit_width", default=None, type=int, help="Quantization Weight Bitwidth")
+parser.add_argument("--model_name", default=None, type=str, help="Named for current model to be saved")
+parser.add_argument("--load", default=None, type=str, help="Path to load model to resume training or evaluation from previous training run")
+parser.add_argument("--evaluate", action='store_true', help="Path to load model to resume training or evaluation from previous training run")
 
 
 # Get dataset
@@ -30,7 +34,7 @@ class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 
 #print(len(test_labels))
 
 train_images = np.reshape(train_images, (train_images.shape[0], train_images.shape[1], train_images.shape[2], 1))
-
+test_images = np.reshape(test_images, (test_images.shape[0], test_images.shape[1], test_images.shape[2], 1))
 #Inpspect image values
 #plt.figure()
 #plt.imshow(train_images[0])
@@ -46,8 +50,10 @@ inputs = keras.layers.Input(shape=(28,28))
 
 class Model:
 
-        def __init__(self, bit_width):
+        def __init__(self, bit_width=None, model_name=None, load=None):
                 self.bit_width = bit_width
+                self.load = load
+                self.model_name = model_name
 
                 self.model = keras.Sequential([SYQ(self.bit_width, 32, (3, 3), activation='relu', input_shape=(28,28,1))
                         , SYQ(self.bit_width, 32, (3, 3), activation='relu')
@@ -56,18 +62,29 @@ class Model:
                         , SYQ_Dense(self.bit_width, 128, activation=tf.nn.relu)
                         , Dense(10, activation=tf.nn.softmax)])
 
+
         def train_model(self):
+                if self.load is not None:
+                        self.model = load_model(args.load)
+
+                assert self.model_name is not None
+
                 self.model.compile(optimizer='adam',
                     loss='sparse_categorical_crossentropy',
                     metrics=['accuracy'])
 
-                self.model.fit(train_images, train_labels, epochs=50)
+                self.model.fit(train_images, train_labels, epochs=1)
+                self.model.save(args.model_name + '.h5')
 
-                test_loss, test_acc = model.evaluate(test_images, test_labels)
+        def evaluate_model(self):
+                if self.load is not None:
+                        self.model = load_model(self.load, custom_objects={'SYQ': SYQ, 'SYQ_Dense': SYQ_Dense})
+
+       	        test_loss, test_acc = self.model.evaluate(test_images, test_labels)
 
                 print('Test accuracy:', test_acc)
 
-                predictions = model.predict(test_images)
+                predictions = self.model.predict(test_images)
 
 #analyze first image - this prints an array of 10 numbers
 #print(predictions[0])
@@ -89,6 +106,14 @@ class Model:
 if __name__ == "__main__":
     args = parser.parse_args()
 
-    model = Model(args.bit_width)
+    if args.evaluate:
+        model = Model(args.bit_width, args.model_name, args.load)
+        #model = load_model(args.load, custom_objects={'SYQ': SYQ, 'SYQ_Dense': SYQ_Dense})
+        model.evaluate_model()
+        exit()
+
+    model = Model(args.bit_width, args.model_name, args.load)
 
     model.train_model()
+
+    model.evaluate_model()

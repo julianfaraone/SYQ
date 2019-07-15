@@ -9,17 +9,51 @@ from tensorflow.python.keras.utils import tf_utils
 import tensorflow as tf
 import tensorflow.keras as keras
 
-def quantize(x, bit_width):
-        if bit_width == 1:
-                return x + tf.stop_gradient(tf.sign(x) - x)
-        else:
+def fixed_point(x, k, fraclength=None, signed=True):
+    if fraclength != None:
+        f = fraclength
+        n = float(2.**f)
+        mn = - 2.**(k - f - 1)
+        mx = -mn - 2.**-f
+        if not signed:
+            mx -= mn
+            mn = 0
+        x = tf.clip_by_value(x, mn, mx)
+    else:
+        n = float(2**k-1)
+    #with G.gradient_override_map({"Floor": "Identity"}):
+    #    return tf.floor(x * n + 0.5) / n
+    return x + tf.stop_gradient((tf.floor(x * n + 0.5)/n) - x)
+
+def quantize(x, bit_width, frac_bits=None, signed=None):
+        if bit_width is None:
                 return x
+        elif bit_width == 1:
+                #binarize
+                return x + tf.stop_gradient(tf.sign(x) - x)
+        elif bit_width == 2:
+                #ternarize
+                ones = tf.ones_like(x)
+                zeros = ones*0
+                mask = tf.where(x<0.33, zeros, ones)
+                binary =  x + tf.stop_gradient(tf.sign(x) - x)
+                ternary = binary * mask
+                return ternary
+        else:
+                x = tf.clip_by_value(x,-1,1)
+                x = x * 0.5 + 0.5 
+                return 2*fixed_point(x, bit_width) - 1
 
 class SYQ(Conv2D):
 
   def __init__(self, bit_width, *args, **kwargs):
         self.bit_width = bit_width
         super(SYQ, self).__init__(*args, **kwargs)
+
+  def get_config(self):
+    config = super().get_config()
+    config['bit_width'] = self.bit_width
+    return config
 
   def build(self, input_shape):
     input_shape = tensor_shape.TensorShape(input_shape)
@@ -82,6 +116,11 @@ class SYQ_Dense(Dense):
   def __init__(self, bit_width, *args, **kwargs):
         self.bit_width = bit_width
         super(SYQ_Dense, self).__init__(*args, **kwargs)
+
+  def get_config(self):
+    config = super().get_config()
+    config['bit_width'] = self.bit_width
+    return config
 
   def build(self, input_shape):
     dtype = dtypes.as_dtype(self.dtype or K.floatx())
