@@ -61,6 +61,7 @@ class Model:
                         , SYQ_Dense(self.bit_width, 128, activation=tf.nn.relu)
                         , SYQ_Dense(self.bit_width, 128, activation=tf.nn.relu)
                         , Dense(10, activation=tf.nn.softmax)])
+                print(self.model.get_config())
 
 
         def train_model(self):
@@ -79,6 +80,8 @@ class Model:
         def evaluate_model(self):
                 if self.load is not None:
                         self.model = load_model(self.load, custom_objects={'SYQ': SYQ, 'SYQ_Dense': SYQ_Dense})
+
+                #print(self.model.get_config())
 
        	        test_loss, test_acc = self.model.evaluate(test_images, test_labels)
 
@@ -110,6 +113,7 @@ if __name__ == "__main__":
         model = Model(args.bit_width, args.model_name, args.load)
         #model = load_model(args.load, custom_objects={'SYQ': SYQ, 'SYQ_Dense': SYQ_Dense})
         model.evaluate_model()
+
         exit()
 
     model = Model(args.bit_width, args.model_name, args.load)
